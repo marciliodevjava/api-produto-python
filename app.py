@@ -1,18 +1,21 @@
 from flask import Flask
 from flask_restful import Api
-from flask_sqlalchemy import SQLAlchemy
+
+from config.config import SQLALCHEMY_DATABASE_URI
+from repository.produto_model import db
 
 app = Flask(__name__)
-app.config.from_pyfile('config/config.py')
-
-# Inicialize a instância do SQLAlchemy passando a aplicação como parâmetro
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
 api = Api(app)
 
 from resource.produto_resource import Produto
 
-api.add_resource(Produto, '/produto', endpoint='produto')
+api.add_resource(Produto, '/produto', endpoint='post')
+api.add_resource(Produto, '/produto/<string:nome>', endpoint='get')
+api.add_resource(Produto, '/produto/<int:id>', endpoint='put')
 
 if __name__ == '__main__':
     app.run(debug=False)
