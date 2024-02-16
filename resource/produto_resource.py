@@ -42,6 +42,16 @@ class Produto(Resource):
             ProdutoModel.atualizar(dados, produto)
             return {'message': MessageProduto.PRODUTO_ATUALIZADO,
                     'produto': produto.json()}, 200
+        else:
+            produto = ProdutoModel(**dados)
+            ProdutoModel.salvar(produto)
+            return {
+                'message': MessageProduto.PRODUTO_CRIADO_COM_SUCESSO.format(produto.nome),
+                'produto': produto.json()}, 201
+        return {
+            'message': MessageProduto.PRODUTO_ERRO_AO_SALVAR}, 500
 
-    def delete(self):
-        pass
+    def delete(self, id):
+        produto = ProdutoModel.buscar(id)
+
+
