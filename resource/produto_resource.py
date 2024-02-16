@@ -53,5 +53,11 @@ class Produto(Resource):
 
     def delete(self, id):
         produto = ProdutoModel.buscar(id)
+        if produto:
+            deletou = ProdutoModel.deletar(produto)
+            if deletou:
+                return {'message': MessageProduto.PRODUTO_DELETADO_COM_SUCESSO}
+            else:
+                return {'message': MessageProduto.PRODUTO_NAO_FOI_DELETADO}
 
 
