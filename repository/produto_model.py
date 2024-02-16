@@ -49,3 +49,12 @@ class ProdutoModel(db.Model):
             return produto
         else:
             return None
+
+    @classmethod
+    def deletar(cls, produto):
+        try:
+            db.session.delete(produto)
+            db.session.commit()
+            return True
+        except Exception:
+            return None
