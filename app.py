@@ -16,6 +16,7 @@ from resource.produto_resource import Produto
 api.add_resource(Produto, '/produto', endpoint='post')
 api.add_resource(Produto, '/produto/<string:nome>', endpoint='get')
 api.add_resource(Produto, '/produto/<int:id>', endpoint='put')
+api.add_resource(Produto, '/produto/<int:id>', endpoint='delete')
 
 if __name__ == '__main__':
     app.run(debug=False)
