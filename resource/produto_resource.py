@@ -1,5 +1,7 @@
 from flask_restful import Resource, reqparse
+
 from enuns.message import MessageProduto
+from repository.produto_model import ProdutoModel
 
 
 class Produto(Resource):
@@ -9,11 +11,13 @@ class Produto(Resource):
         self.__parser.add_argument('descricao', type=str, required=True, help=MessageProduto.PRODUTO_PARSER_DESCRICAO)
         self.__parser.add_argument('valor', type=float, required=True, help=MessageProduto.PRODUTO_PARSER_VALOR)
 
-    def get(self):
-        pass
+    def get(self, nome):
+        produto = ProdutoModel.query.filter_by(nome=nome).first()
+        if not produto:
+            return {'message': MessageProduto.PRODUTO_NAO_ENCONTRADO.format(nome)}, 404
+        return {'Produto': produto.json()}, 200
 
     def post(self):
-        from repository.produto_model import ProdutoModel
 
         dados = self.__parser.parse_args()
         produto = ProdutoModel.query.filter_by(nome=dados.get('nome')).first()
@@ -25,11 +29,19 @@ class Produto(Resource):
                 'message': MessageProduto.PRODUTO_CRIADO_COM_SUCESSO.format(produto.nome),
                 'produto': produto.json()}, 201
         return {
-            'message': MessageProduto.PRODUTO_JA_EXISTE
-        }
+            'message': MessageProduto.PRODUTO_JA_EXISTE.format(dados.get('nome'))
+        }, 200
 
-    def put(self):
-        pass
+    def put(self, id):
+        dados = self.__parser.parse_args()
+
+        produto = ProdutoModel.query.filter_by(id=id).first()
+        if produto:
+            produto = ProdutoModel(**dados)
+            produto.id = id
+            ProdutoModel.atualizar(dados, produto)
+            return {'message': MessageProduto.PRODUTO_ATUALIZADO,
+                    'produto': produto.json()}, 200
 
     def delete(self):
         pass
