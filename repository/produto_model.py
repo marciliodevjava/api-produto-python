@@ -41,3 +41,11 @@ class ProdutoModel(db.Model):
             produto.descricao = dados['descricao']
             produto.valor = dados['valor']
             db.session.commit()
+
+    @classmethod
+    def buscar(cls, id):
+        produto = ProdutoModel.query.filter_by(id=id).first()
+        if produto:
+            return produto
+        else:
+            return None
