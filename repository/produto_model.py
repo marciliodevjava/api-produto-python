@@ -1,4 +1,7 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
 
 class ProdutoModel(db.Model):
     __tablename__ = 'produto'
@@ -27,3 +30,14 @@ class ProdutoModel(db.Model):
     def salvar(cls, produto):
         db.session.add(produto)
         db.session.commit()
+
+    @classmethod
+    def atualizar(cls, dados, produto):
+        id = produto.id
+        produto = ProdutoModel.query.filter_by(id=id).first()
+        if produto:
+            produto.id = id
+            produto.nome = dados['nome']
+            produto.descricao = dados['descricao']
+            produto.valor = dados['valor']
+            db.session.commit()
