@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
 
 from config.config import SQLALCHEMY_DATABASE_URI
 from repository.produto_model import db
@@ -9,6 +10,8 @@ from resource.produto_resource import Produto
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = '123'
+jwt = JWTManager(app)
 db.init_app(app)
 
 api = Api(app)
