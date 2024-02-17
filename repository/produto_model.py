@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from extensao import db
 
 
 class ProdutoModel(db.Model):
