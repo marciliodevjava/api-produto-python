@@ -20,3 +20,12 @@ class UsuarioModel(db.Model):
             'nome': self.nome,
             'login': self.login
         }
+
+    @classmethod
+    def salvar(cls, usuario):
+        try:
+            db.session.add(usuario)
+            db.session.commit()
+            return True
+        except Exception as a:
+            return False
