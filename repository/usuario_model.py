@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from extensao import db
 
 
 class UsuarioModel(db.Model):
@@ -10,10 +8,13 @@ class UsuarioModel(db.Model):
     login = db.Column(db.String(50), nullable=False)
     senha = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, nome, login, sneha, **dados):
+    def __init__(self, nome, login, senha, **dados):
         self.nome = nome
         self.login = login
-        self.senha = sneha
+        self.senha = senha
+
+    def __repr__(self):
+        return '<Name %r>' % self.nome
 
     def json(self):
         return {
@@ -29,3 +30,12 @@ class UsuarioModel(db.Model):
             return True
         except Exception as a:
             return False
+
+    @classmethod
+    def buscar(cls, login):
+        try:
+            user = db.session.query(cls).filter_by(login=login).first()
+            if user:
+                return user
+        except Exception:
+            return None
