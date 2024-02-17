@@ -14,6 +14,9 @@ class MessageProduto(Enum):
     PRODUTO_PARSER_NOME = "O campo 'nome' não foi enviado."
 
 class MessageLogin(Enum):
+    USUARIO_E_SENHA_INCORRETA = 'Usuário e senha inválidos.'
+    USUARIO_SENHA_INCORRETA = 'Senha incorreta, tente novamente.'
+    USUARIO_LOGADO_COM_SUCESSO = 'Usuário logado com sucesso!'
     OCORREU_UM_ERRO_AO_SALVAR_USUARIO = 'Ocorreu um erro ao salvar o usuário.'
     USUARIO_CRIADO_COM_SUCESSO = 'Usuário criado com sucesso.'
     USUARIO_JA_EXISTE = 'O Usuário {} já existe, utilize outro nome.'
