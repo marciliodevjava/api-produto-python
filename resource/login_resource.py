@@ -18,6 +18,18 @@ class Login(Resource):
                 'message': MessageLogin.USUARIO_JA_EXISTE.format(dados['login']),
                 'usuario': dados.get('login')
             }, 500
+        usuario = UsuarioModel(**dados)
+        try:
+            UsuarioModel.salvar(usuario)
+            return {
+                'message': MessageLogin.USUARIO_CRIADO_COM_SUCESSO,
+                'usuario': usuario.json()
+            }, 201
+        except Exception as a:
+            return {
+                'message': MessageLogin.OCORREU_UM_ERRO_AO_SALVAR_USUARIO
+            }, 500
+
 
 
 class LoginCadastro(Resource):
