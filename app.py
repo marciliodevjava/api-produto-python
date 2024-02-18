@@ -1,15 +1,19 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 
-from config.config import SQLALCHEMY_DATABASE_URI
+from config.config import SQLALCHEMY_DATABASE_URI, TIME_TOKEN, SECRET_KEY, NM_ID_SESSAO, NONE
+from config.segredos import SECRET, TOKEN_EXPIRES, DATABASE_URI, HEADER_NAME, HEADER_TYPE, TRACK_MODIFICATIONS
 from extensao import jwt, db
 from resource.login_resource import Login, LoginCadastro
 from resource.produto_resource import Produto, ProdutoTest
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = '123'
+app.config[DATABASE_URI] = SQLALCHEMY_DATABASE_URI
+app.config[TRACK_MODIFICATIONS] = False
+app.config[SECRET] = SECRET_KEY
+app.config[TOKEN_EXPIRES] = TIME_TOKEN
+app.config[HEADER_NAME] = NM_ID_SESSAO
+app.config[HEADER_TYPE] = NONE
 
 jwt.init_app(app)
 db.init_app(app)
