@@ -22,3 +22,7 @@ class MessageLogin(Enum):
     USUARIO_JA_EXISTE = 'O Usuário {} já existe, utilize outro nome.'
     SENHA_REQUIRIDO = 'O campo "senha" precisa ser enviado.'
     LOGIN_REQUERIDO = 'O campo "login" precisa ser enviado.'
+    
+class MessageToken(Enum):
+    TOKEN_EXPIRADO = 'Token expirado, renove o seu token e tente novamente'
+    TOKEN_NAO_AUTORIZADO = 'Token inválido.'
