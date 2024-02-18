@@ -1,6 +1,4 @@
-import os
-
-SECRET_KEY = 'senha'
+import datetime
 
 SQLALCHEMY_DATABASE_URI = \
     '{SGBD}://{usuario}:{senha}@{servidor}:{port}/{database}'.format(
@@ -11,3 +9,8 @@ SQLALCHEMY_DATABASE_URI = \
         port='3306',
         database='produto_python'
     )
+
+SECRET_KEY = '123'
+TIME_TOKEN = datetime.timedelta(minutes=59)
+NM_ID_SESSAO = "nmIdSessao"
+NONE = None
