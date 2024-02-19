@@ -26,26 +26,35 @@ class ProdutoModel(db.Model):
 
     @classmethod
     def salvar(cls, produto):
-        db.session.add(produto)
-        db.session.commit()
+        try:
+            db.session.add(produto)
+            db.session.commit()
+        except BaseException:
+            return None
 
     @classmethod
     def atualizar(cls, dados, produto):
-        id = produto.id
-        produto = ProdutoModel.query.filter_by(id=id).first()
-        if produto:
-            produto.id = id
-            produto.nome = dados['nome']
-            produto.descricao = dados['descricao']
-            produto.valor = dados['valor']
-            db.session.commit()
+        try:
+            id = produto.id
+            produto = ProdutoModel.query.filter_by(id=id).first()
+            if produto:
+                produto.id = id
+                produto.nome = dados['nome']
+                produto.descricao = dados['descricao']
+                produto.valor = dados['valor']
+                db.session.commit()
+            return None
+        except BaseException:
+            return None
 
     @classmethod
     def buscar(cls, id):
-        produto = ProdutoModel.query.filter_by(id=id).first()
-        if produto:
-            return produto
-        else:
+        try:
+            produto = ProdutoModel.query.filter_by(id=id).first()
+            if produto:
+                return produto
+            return None
+        except BaseException:
             return None
 
     @classmethod
@@ -54,5 +63,5 @@ class ProdutoModel(db.Model):
             db.session.delete(produto)
             db.session.commit()
             return True
-        except Exception:
+        except BaseException:
             return None
