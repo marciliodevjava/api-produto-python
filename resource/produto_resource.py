@@ -3,7 +3,7 @@ from flask_restful import Resource, reqparse
 
 from enuns.message import MessageProduto, MessageToken
 from repository.produto_model import ProdutoModel
-
+from formulario.preco_formulario import PrecoFormulario
 
 class Produto(Resource):
     def __init__(self):
@@ -11,7 +11,7 @@ class Produto(Resource):
         self.__parser.add_argument('nome', type=str, required=True, help=MessageProduto.PRODUTO_PARSER_NOME)
         self.__parser.add_argument('descricao', type=str, required=True, help=MessageProduto.PRODUTO_PARSER_DESCRICAO)
         self.__parser.add_argument('valor', type=float, required=True, help=MessageProduto.PRODUTO_PARSER_VALOR)
-        self.__parser.add_argument('preco', type=float, required=True, help=MessageProduto.PRODUTO_PARSER_PRECO)
+        self.__parser.add_argument('preco', type=dict, required=True, help=MessageProduto.PRODUTO_PARSER_PRECO)
 
     @jwt_required()
     def get(self, nome):
