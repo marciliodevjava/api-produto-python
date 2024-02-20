@@ -3,7 +3,7 @@ from flask_restful import Resource, reqparse
 
 from enuns.message import MessageProduto, MessageToken
 from repository.produto_model import ProdutoModel
-from formulario.preco_formulario import PrecoFormulario
+
 
 class Produto(Resource):
     def __init__(self):
