@@ -42,8 +42,8 @@ class Produto(Resource):
             }, 200
         except jwt_exceptions.NoAuthorizationError as e:
             return {'message': MessageToken.TOKEN_NAO_AUTORIZADO}, 401
-        except Exception as e:
-            return {'message': MessageProduto.PRODUTO_ERRO_AO_SALVAR}, 500
+        # except Exception as e:
+        #     return {'message': MessageProduto.PRODUTO_ERRO_AO_SALVAR}, 500
 
     @jwt_required()
     def put(self, id):
