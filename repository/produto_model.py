@@ -7,21 +7,24 @@ class ProdutoModel(db.Model):
     nome = db.Column(db.String(50), nullable=False)
     descricao = db.Column(db.String(50), nullable=False)
     valor = db.Column(db.Float, nullable=False)
+    preco_id = db.relationship('PrecoModel')
 
-    def __init__(self, nome, descricao, valor, **dados):
+    def __init__(self, nome, descricao, valor, preco_id, **dados):
         self.nome = nome
         self.descricao = descricao
         self.valor = valor
+        self.preco_id = preco_id
 
     def __repr__(self):
-        return '<Name %r>' % self.nome
+        return f'<ProdutoModel(nome={self.nome}, descricao={self.descricao}, valor={self.valor}, preco_id={self.preco_id})>'
 
     def json(self):
         return {
             'id': self.id,
             'nome': self.nome,
             'descricao': self.descricao,
-            'valor': self.valor
+            'valor': self.valor,
+            'preco': self.preco.json() if self.preco else None
         }
 
     @classmethod
@@ -29,20 +32,19 @@ class ProdutoModel(db.Model):
         try:
             db.session.add(produto)
             db.session.commit()
+            return produto
         except BaseException:
             return None
 
     @classmethod
     def atualizar(cls, dados, produto):
         try:
-            id = produto.id
-            produto = ProdutoModel.query.filter_by(id=id).first()
             if produto:
-                produto.id = id
-                produto.nome = dados['nome']
-                produto.descricao = dados['descricao']
-                produto.valor = dados['valor']
+                produto.nome = dados.get('nome', produto.nome)
+                produto.descricao = dados.get('descricao', produto.descricao)
+                produto.valor = dados.get('valor', produto.valor)
                 db.session.commit()
+                return produto
             return None
         except BaseException:
             return None
@@ -50,10 +52,7 @@ class ProdutoModel(db.Model):
     @classmethod
     def buscar(cls, id):
         try:
-            produto = ProdutoModel.query.filter_by(id=id).first()
-            if produto:
-                return produto
-            return None
+            return cls.query.get(id)
         except BaseException:
             return None
 
@@ -64,4 +63,4 @@ class ProdutoModel(db.Model):
             db.session.commit()
             return True
         except BaseException:
-            return None
+            return False
