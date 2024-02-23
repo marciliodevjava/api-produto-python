@@ -5,7 +5,7 @@ class PrecoModel(db.Model):
     __tablename__ = 'preco'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     preco = db.Column(db.Float, nullable=False)
-    produto = db.Column(db.Integer, db.ForeignKey('produto.id'))
+    produto = db.relationship('ProdutoModel')
 
     def __init__(self, preco):
         self.preco = preco
