@@ -7,13 +7,12 @@ class ProdutoModel(db.Model):
     nome = db.Column(db.String(50), nullable=False)
     descricao = db.Column(db.String(50), nullable=False)
     valor = db.Column(db.Float, nullable=False)
-    preco_id = db.relationship('PrecoModel')
+    preco_id = db.Column(db.Integer, db.ForeignKey('preco.id'))
 
-    def __init__(self, nome, descricao, valor, preco_id, **dados):
+    def __init__(self, nome, descricao, valor, **dados):
         self.nome = nome
         self.descricao = descricao
         self.valor = valor
-        self.preco_id = preco_id
 
     def __repr__(self):
         return f'<ProdutoModel(nome={self.nome}, descricao={self.descricao}, valor={self.valor}, preco_id={self.preco_id})>'
@@ -24,7 +23,7 @@ class ProdutoModel(db.Model):
             'nome': self.nome,
             'descricao': self.descricao,
             'valor': self.valor,
-            'preco': self.preco.json() if self.preco else None
+            'preco': [preco.json() for preco in self.preco_id]
         }
 
     @classmethod
