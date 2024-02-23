@@ -1,4 +1,5 @@
 from extensao import db
+from repository.preco_model import PrecoModel
 
 
 class ProdutoModel(db.Model):
@@ -9,10 +10,11 @@ class ProdutoModel(db.Model):
     valor = db.Column(db.Float, nullable=False)
     preco_id = db.Column(db.Integer, db.ForeignKey('preco.id'))
 
-    def __init__(self, nome, descricao, valor, **dados):
+    def __init__(self, nome, descricao, valor, preco, **dados):
         self.nome = nome
         self.descricao = descricao
         self.valor = valor
+        self.preco_id = preco['id']
 
     def __repr__(self):
         return f'<ProdutoModel(nome={self.nome}, descricao={self.descricao}, valor={self.valor}, preco_id={self.preco_id})>'
@@ -23,12 +25,15 @@ class ProdutoModel(db.Model):
             'nome': self.nome,
             'descricao': self.descricao,
             'valor': self.valor,
-            'preco': [preco.json() for preco in self.preco_id]
+            'preco': ""
         }
 
     @classmethod
     def salvar(cls, produto):
         try:
+
+            preco = PrecoModel(produto.preco_id['preco'])
+            PrecoModel.salvar(preco)
             db.session.add(produto)
             db.session.commit()
             return produto
