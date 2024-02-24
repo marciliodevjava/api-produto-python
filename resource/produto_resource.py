@@ -2,6 +2,7 @@ from flask_jwt_extended import jwt_required, exceptions as jwt_exceptions
 from flask_restful import Resource, reqparse
 
 from enuns.message import MessageProduto, MessageToken
+from repository.preco_model import PrecoModel
 from repository.produto_model import ProdutoModel
 
 
@@ -30,9 +31,13 @@ class Produto(Resource):
         try:
             dados = self.__parser.parse_args()
             produto = ProdutoModel.query.filter_by(nome=dados.get('nome')).first()
-
+            preco = None
             if not produto:
-                produto = ProdutoModel(**dados)
+                if dados['preco']:
+                    preco_objeto = PrecoModel(dados.get('preco'))
+                    preco = PrecoModel.salvar(preco_objeto)
+                    id = preco.id
+                    produto = ProdutoModel(dados['nome'], dados['descricao'], dados['valor'], id)
                 ProdutoModel.salvar(produto)
                 return {
                     'message': MessageProduto.PRODUTO_CRIADO_COM_SUCESSO.format(produto.nome),
