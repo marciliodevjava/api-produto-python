@@ -4,11 +4,11 @@ from extensao import db
 class PrecoModel(db.Model):
     __tablename__ = 'preco'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    preco = db.Column(db.Float, nullable=False)
-    produto = db.relationship('ProdutoModel')
+    valor = db.Column(db.Float, nullable=False)
+    produto = db.relationship('ProdutoModel', backref='produto', lazy=True)
 
     def __init__(self, preco):
-        self.preco = preco
+        self.valor = preco['preco']
 
     def json(self):
         return {
